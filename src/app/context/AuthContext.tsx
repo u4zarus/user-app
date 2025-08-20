@@ -19,6 +19,8 @@ type AuthContextType = {
     loading: boolean;
 };
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -40,14 +42,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const login = async (email: string, password: string) => {
         setLoading(true);
         try {
-            const res = await fetch(
-                "https://frontend-test-be.stage.thinkeasy.cz/api/auth/login",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password }),
-                }
-            );
+            const res = await fetch(`${API_BASE}/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
             if (!res.ok) {
                 throw new Error("Login failed");
@@ -76,14 +75,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }) => {
         setLoading(true);
         try {
-            const res = await fetch(
-                "https://frontend-test-be.stage.thinkeasy.cz/api/auth/signup",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body),
-                }
-            );
+            const res = await fetch(`${API_BASE}/auth/signup`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            });
 
             if (!res.ok) {
                 throw new Error("Signup failed");
@@ -107,19 +103,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const refresh = async () => {
         if (!refreshToken) return;
         try {
-            const res = await fetch(
-                "https://frontend-test-be.stage.thinkeasy.cz/api/auth/refresh-token",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ token: refreshToken }),
-                }
-            );
+            const res = await fetch(`${API_BASE}/auth/refresh-token`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: refreshToken }),
+            });
 
             if (!res.ok) throw new Error("Refresh failed");
             const data = await res.json();
-            setAccessToken(data.access_token);
-            localStorage.setItem("accessToken", data.access_token);
+            setAccessToken(data.accessToken);
+            localStorage.setItem("accessToken", data.accessToken);
         } catch (err) {
             console.error(err);
             logout();
