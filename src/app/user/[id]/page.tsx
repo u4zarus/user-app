@@ -6,6 +6,7 @@ interface UserPageProps {
 
 const UserPage = async ({ params }: UserPageProps) => {
     const { id } = await params;
+
     return <div>User page {id}</div>;
 };
 

@@ -1,5 +1,36 @@
+import Link from "next/link";
+
 const Navbar = () => {
-    return <div></div>;
+    return (
+        <nav className="bg-gray-800 shadow-lg">
+            <div className="container mx-auto px-6 py-3">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                        <Link
+                            className="text-2xl font-bold text-white"
+                            href="/"
+                        >
+                            <span className="font-black">Blog</span>App
+                        </Link>
+                    </div>
+                    <div className="flex items-center">
+                        <a
+                            className="text-gray-300 hover:text-white px-3"
+                            href="/login"
+                        >
+                            Login
+                        </a>
+                        <a
+                            className="text-gray-300 hover:text-white px-3"
+                            href="/signup"
+                        >
+                            Signup
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
 };
 
 export default Navbar;
