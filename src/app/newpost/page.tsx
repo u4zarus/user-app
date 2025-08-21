@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import { createPost } from "../lib/postsApi";
+import { useRouter } from "next/navigation";
 
 type PostForm = {
     title: string;
@@ -18,12 +19,14 @@ const NewPostPage = () => {
         formState: { errors },
     } = useForm<PostForm>();
     const [message, setMessage] = useState<string | null>(null);
+    const router = useRouter();
 
     const onSubmit = async (data: PostForm) => {
         if (!accessToken) return;
         try {
             await createPost(data, accessToken!, refresh);
             setMessage("Post created successfully");
+            router.push("/");
         } catch {
             setMessage("Failed to create post");
         }

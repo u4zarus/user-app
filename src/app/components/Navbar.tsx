@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "../hooks/useAuth";
 
 const Navbar = () => {
+    const { accessToken, logout } = useAuth();
+
     return (
         <nav className="bg-gray-800 shadow-lg">
             <div className="container mx-auto px-6 py-3">
@@ -14,26 +19,39 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="flex items-center">
-                        <Link
-                            className="text-gray-300 hover:text-white px-3"
-                            href="/newpost"
-                        >
-                            New Post
-                        </Link>
+                        {accessToken && (
+                            <Link
+                                className="text-gray-300 hover:text-white px-3"
+                                href="/newpost"
+                            >
+                                New Post
+                            </Link>
+                        )}
                     </div>
                     <div className="flex items-center">
-                        <Link
-                            className="text-gray-300 hover:text-white px-3"
-                            href="/login"
-                        >
-                            Login
-                        </Link>
-                        <Link
-                            className="text-gray-300 hover:text-white px-3"
-                            href="/signup"
-                        >
-                            Signup
-                        </Link>
+                        {accessToken ? (
+                            <button
+                                onClick={logout}
+                                className="text-gray-300 hover:text-white px-3 cursor-pointer"
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <>
+                                <Link
+                                    className="text-gray-300 hover:text-white px-3"
+                                    href="/login"
+                                >
+                                    Login
+                                </Link>
+                                <Link
+                                    className="text-gray-300 hover:text-white px-3"
+                                    href="/signup"
+                                >
+                                    Signup
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

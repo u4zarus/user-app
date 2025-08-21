@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { getAllPosts } from "../lib/postsApi";
+import { getAllPosts, getUserPosts } from "../lib/postsApi";
+import Spinner from "./Spinner";
+import PostCard from "./PostCard";
 
 type Post = {
     id: string;
+    authorId: string;
     title: string;
     content: string;
     createdAt: string;
@@ -20,19 +23,51 @@ const Dashboard = () => {
     useEffect(() => {
         if (!accessToken) return;
         setLoading(true);
+
         const fetchPosts = async () => {
-            const data = await getAllPosts(accessToken);
-            if (!data) {
+            try {
+                const data = await getAllPosts(accessToken);
+                if (!data) {
+                    setError("Failed to fetch posts");
+                    setLoading(false);
+                    return;
+                }
+
+                const sortedPosts = data.sort(
+                    (a: Post, b: Post) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime()
+                );
+
+                setPosts(sortedPosts);
+                setLoading(false);
+            } catch {
                 setError("Failed to fetch posts");
                 setLoading(false);
-                return;
             }
-            setPosts(data);
-            setLoading(false);
         };
 
         fetchPosts();
     }, [accessToken]);
+
+    const handleAuthorClick = async (authorId: string) => {
+        if (!accessToken) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await getUserPosts(authorId, accessToken);
+            const sorted = data.sort(
+                (a: Post, b: Post) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+            );
+            setPosts(sorted);
+        } catch {
+            setError("Failed to fetch posts");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (!accessToken) {
         return (
@@ -41,8 +76,7 @@ const Dashboard = () => {
     }
 
     if (loading) {
-        // spinner
-        return <p className="text-center mt-10">Loading...</p>;
+        return <Spinner />;
     }
 
     if (error) {
@@ -55,17 +89,18 @@ const Dashboard = () => {
             {posts.length === 0 && (
                 <p className="text-center mt-10">No posts yet.</p>
             )}
-            <ul className="space-y-4">
+            <div className="space-y-4">
                 {posts.map((post) => (
-                    <li key={post.id} className="border rounded-lg p-4 shadow">
-                        <h2 className="text-lg font-semibold">{post.title}</h2>
-                        <p className="text-gray-700">{post.content}</p>
-                        <p className="text-sm text-gray-400">
-                            Created: {new Date(post.createdAt).toLocaleString()}
-                        </p>
-                    </li>
+                    <PostCard
+                        key={post.id}
+                        authorId={post.authorId}
+                        title={post.title}
+                        content={post.content}
+                        createdAt={post.createdAt}
+                        onAuthorClick={handleAuthorClick}
+                    />
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };
