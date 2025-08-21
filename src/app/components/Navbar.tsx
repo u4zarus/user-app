@@ -14,18 +14,26 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="flex items-center">
-                        <a
+                        <Link
+                            className="text-gray-300 hover:text-white px-3"
+                            href="/newpost"
+                        >
+                            New Post
+                        </Link>
+                    </div>
+                    <div className="flex items-center">
+                        <Link
                             className="text-gray-300 hover:text-white px-3"
                             href="/login"
                         >
                             Login
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             className="text-gray-300 hover:text-white px-3"
                             href="/signup"
                         >
                             Signup
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

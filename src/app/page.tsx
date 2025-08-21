@@ -1,10 +1,11 @@
+import Dashboard from "./components/Dashboard";
 import Navbar from "./components/Navbar";
 
 const Home = () => {
     return (
-        <div>
+        <div className="">
             <Navbar />
-            Home
+            <Dashboard />
         </div>
     );
 };

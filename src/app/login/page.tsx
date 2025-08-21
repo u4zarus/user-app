@@ -22,7 +22,7 @@ const LoginPage = () => {
         setError(null);
         try {
             await login(data.email, data.password);
-        } catch (error) {
+        } catch {
             setError("Invalid email or password");
         }
     };

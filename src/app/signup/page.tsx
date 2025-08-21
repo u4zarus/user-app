@@ -24,7 +24,7 @@ const SignUpPage = () => {
         setError(null);
         try {
             await signup(data);
-        } catch (error) {
+        } catch {
             setError("Signup failed. Please try again.");
         }
     };
