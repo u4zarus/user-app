@@ -47,6 +47,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("refreshToken", refresh);
     };
 
+    /**
+     * Checks if a given token is expired or not
+     *
+     * If the token is invalid, it is considered expired
+     *
+     * @param token The token to check
+     * @returns True if the token is expired, false otherwise
+     */
     const isTokenExpired = (token: string) => {
         try {
             const decoded = JSON.parse(atob(token.split(".")[1]));

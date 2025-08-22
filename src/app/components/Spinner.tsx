@@ -3,6 +3,13 @@ interface SpinnerProps {
     color?: string;
 }
 
+/**
+ * A Tailwind CSS-based spinner component that can be used to indicate that
+ * a long-running operation is taking place.
+ *
+ * @param {string} [sizeClass="h-5 w-5"] - The size class to apply to the spinner.
+ * @param {string} [color="text-white"] - The color class to apply to the spinner.
+ */
 const Spinner: React.FC<SpinnerProps> = ({
     sizeClass = "h-5 w-5",
     color = "text-white",

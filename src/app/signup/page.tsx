@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
-import { useState } from "react";
 import { toast } from "react-toastify";
 
 type SignupForm = {
@@ -12,6 +11,18 @@ type SignupForm = {
     password: string;
 };
 
+/**
+ * Page for signing up a user.
+ *
+ * If the user is not logged in, displays a form for signing up.
+ * The form has fields for the first name, last name, email, and password.
+ * The form is validated using React Hook Form.
+ *
+ * When the form is submitted, the page calls the `signup` function to
+ * create the new user. If the user is created successfully, the page
+ * displays a success message and redirects the user to the home page.
+ * If the user creation fails, the page displays an error message.
+ */
 const SignUpPage = () => {
     const { signup, loading } = useAuth();
     const {
@@ -19,16 +30,26 @@ const SignUpPage = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<SignupForm>();
-    const [error, setError] = useState<string | null>(null);
 
+    /**
+     * Handles the form submission for signing up a user.
+     *
+     * If the signup fails, an error message is displayed above the form.
+     * If the signup is successful, a success message is displayed, and the user is
+     * redirected to the home page.
+     *
+     * @param data The form data
+     */
     const onSubmit = async (data: SignupForm) => {
-        setError(null);
         try {
             await signup(data);
             toast.success("Account created successfully!");
-        } catch {
-            setError("Signup failed. Please try again.");
-            toast.error("Signup failed. Please try again.");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            } else {
+                toast.error("Signup failed. Please try again.");
+            }
         }
     };
 
@@ -37,20 +58,18 @@ const SignUpPage = () => {
             <div className="w-full max-w-md bg-gray-800 shadow-lg rounded-2xl p-6">
                 <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
 
-                {error && (
-                    <p className="text-red-500 text-sm mb-4 text-center">
-                        {error}
-                    </p>
-                )}
-
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     {/* First name */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">
+                        <label
+                            htmlFor="firstname"
+                            className="block text-sm font-medium mb-1"
+                        >
                             First Name
                         </label>
                         <input
                             type="text"
+                            id="firstname"
                             {...register("firstname", {
                                 required: "First name is required",
                             })}
@@ -66,11 +85,15 @@ const SignUpPage = () => {
 
                     {/* Last name */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">
+                        <label
+                            htmlFor="lastname"
+                            className="block text-sm font-medium mb-1"
+                        >
                             Last Name
                         </label>
                         <input
                             type="text"
+                            id="lastname"
                             {...register("lastname", {
                                 required: "Last name is required",
                             })}
@@ -86,11 +109,15 @@ const SignUpPage = () => {
 
                     {/* Email */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-medium mb-1"
+                        >
                             Email
                         </label>
                         <input
                             type="email"
+                            id="email"
                             {...register("email", {
                                 required: "Email is required",
                             })}
@@ -106,11 +133,15 @@ const SignUpPage = () => {
 
                     {/* Password */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">
+                        <label
+                            htmlFor="password"
+                            className="block text-sm font-medium mb-1"
+                        >
                             Password
                         </label>
                         <input
                             type="password"
+                            id="password"
                             {...register("password", {
                                 required: "Password is required",
                             })}
@@ -128,7 +159,7 @@ const SignUpPage = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+                        className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50 cursor-pointer"
                     >
                         {loading ? "Signing up..." : "Sign Up"}
                     </button>

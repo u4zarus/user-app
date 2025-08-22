@@ -6,6 +6,19 @@ interface PostCardProps {
     onAuthorClick?: (authorId: string) => void;
 }
 
+/**
+ * A card component for displaying a single post.
+ *
+ * @param {string} authorId - The ID of the user who created the post.
+ * @param {string} title - The title of the post.
+ * @param {string} content - The content of the post.
+ * @param {string} createdAt - The date and time when the post was created. This
+ *                              is converted to a string using the `toLocaleString`
+ *                              method.
+ * @param {function} onAuthorClick - An optional function to call when the
+ *                                   "By: <authorId>" element is clicked. The
+ *                                   function is passed the `authorId` as an argument.
+ */
 const PostCard: React.FC<PostCardProps> = ({
     authorId,
     title,

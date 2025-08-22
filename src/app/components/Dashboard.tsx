@@ -14,7 +14,6 @@ const Dashboard = () => {
     const {
         posts,
         loading,
-        error,
         fetchAllPosts,
         fetchUserPosts,
         showAllPosts,
@@ -33,8 +32,8 @@ const Dashboard = () => {
         return (
             <p className="text-center mt-10">You must log in to view posts.</p>
         );
+
     if (loading) return <Spinner sizeClass="h-8 w-8" color="text-blue-500" />;
-    if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
     return (
         <div className="max-w-2xl mx-auto mt-8 p-4">

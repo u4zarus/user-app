@@ -6,6 +6,19 @@ type PostFilterProps = {
     showAllPosts: () => void;
 };
 
+/**
+ * A component for filtering posts by a search query.
+ *
+ * This component renders an input field and a button. The input field
+ * is used to enter a search query. When the search query changes, the
+ * `setSearchQuery` function is called with the new query. The button
+ * is used to reset the search query. When the button is clicked, the
+ * `showAllPosts` function is called.
+ *
+ * @param searchQuery The current search query
+ * @param setSearchQuery A function to call when the search query changes
+ * @param showAllPosts A function to call when the button is clicked
+ */
 const PostFilter = ({
     searchQuery,
     setSearchQuery,

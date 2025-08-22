@@ -6,9 +6,22 @@ import { toast } from "react-toastify";
 
 const navLinkClass = "text-gray-300 hover:text-white px-3";
 
+/**
+ * A navigation bar component for the app.
+ *
+ * The navbar displays a "New Post" link if the user is logged in, and
+ * "Login" and "Signup" links if the user is not logged in. The navbar
+ * also contains a logout button if the user is logged in.
+ *
+ * @returns The navbar component
+ */
 const Navbar = () => {
     const { accessToken, logout } = useAuth();
 
+    /**
+     * Logs the user out of the app and displays a toast message
+     * when the logout is successful.
+     */
     const handleLogout = () => {
         logout();
         toast.info("Logged out successfully");

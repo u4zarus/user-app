@@ -12,6 +12,20 @@ type PostForm = {
     content: string;
 };
 
+/**
+ * Page for creating a new post.
+ *
+ * If the user is not logged in, displays a message prompting them to log in.
+ * If the user is logged in, displays a form for creating a new post.
+ *
+ * The form has fields for the post title and content. The form is validated
+ * using React Hook Form.
+ *
+ * When the form is submitted, the page calls the `createPost` function to
+ * create the new post. If the post is created successfully, the page displays
+ * a success message and redirects the user to the home page. If the post
+ * creation fails, the page displays an error message.
+ */
 const NewPostPage = () => {
     const { accessToken, refresh } = useAuth();
     const {
@@ -19,20 +33,36 @@ const NewPostPage = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<PostForm>();
-    const [message, setMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+    /**
+     * Handles the form submission for creating a new post.
+     *
+     * If the user is not logged in, does nothing.
+     *
+     * If the user is logged in, calls the `createPost` function with the
+     * form data and access token. If the post is created successfully,
+     * displays a success message and redirects the user to the home page.
+     * If the post creation fails, displays an error message.
+     *
+     * @param data The form data
+     */
     const onSubmit = async (data: PostForm) => {
         if (!accessToken) return;
+        setLoading(true);
         try {
             await createPost(data, accessToken!, refresh);
-            setMessage("Post created successfully");
             toast.success("Post created successfully!");
-
             router.push("/");
-        } catch {
-            setMessage("Failed to create post");
-            toast.error("Failed to create post");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            } else {
+                toast.error("Failed to create post");
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -47,11 +77,14 @@ const NewPostPage = () => {
     return (
         <div className="max-w-md mx-auto mt-8 p-4 bg-gray-800 shadow rounded">
             <h1 className="text-xl font-bold mb-4">Create New Post</h1>
-            {message && <p className="mb-4 text-green-500">{message}</p>}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
-                    <label className="block mb-1">Title</label>
+                    <label htmlFor="title" className="block mb-1">
+                        Title
+                    </label>
                     <input
+                        type="text"
+                        id="title"
                         {...register("title", {
                             required: "Title is required",
                         })}
@@ -64,8 +97,11 @@ const NewPostPage = () => {
                     )}
                 </div>
                 <div>
-                    <label className="block mb-1">Content</label>
+                    <label htmlFor="content" className="block mb-1">
+                        Content
+                    </label>
                     <textarea
+                        id="content"
                         {...register("content", {
                             required: "Content is required",
                         })}
@@ -77,8 +113,12 @@ const NewPostPage = () => {
                         </p>
                     )}
                 </div>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Create Post
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+                >
+                    {loading ? "Creating..." : "Create Post"}
                 </button>
             </form>
         </div>
