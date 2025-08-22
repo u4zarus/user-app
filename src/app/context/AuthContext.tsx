@@ -41,8 +41,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (storedAccess && storedRefresh) {
             setAccessToken(storedAccess);
             setRefreshToken(storedRefresh);
+
+            const tokenIsExpired = isTokenExpired(storedAccess);
+            if (tokenIsExpired) {
+                refresh();
+            }
         }
     }, []);
+
+    const isTokenExpired = (token: string) => {
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        const expirationTime = decodedToken.exp * 1000;
+        return expirationTime < Date.now();
+    };
 
     /**
      * Logs a user in with the given email and password
