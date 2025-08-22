@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import { createPost } from "../lib/postsApi";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 type PostForm = {
     title: string;
@@ -26,9 +27,12 @@ const NewPostPage = () => {
         try {
             await createPost(data, accessToken!, refresh);
             setMessage("Post created successfully");
+            toast.success("Post created successfully!");
+
             router.push("/");
         } catch {
             setMessage("Failed to create post");
+            toast.error("Failed to create post");
         }
     };
 

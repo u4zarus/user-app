@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type SignupForm = {
     firstname: string;
@@ -24,8 +25,10 @@ const SignUpPage = () => {
         setError(null);
         try {
             await signup(data);
+            toast.success("Account created successfully!");
         } catch {
             setError("Signup failed. Please try again.");
+            toast.error("Signup failed. Please try again.");
         }
     };
 

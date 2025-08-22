@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type LoginForm = {
     email: string;
@@ -22,8 +23,10 @@ const LoginPage = () => {
         setError(null);
         try {
             await login(data.email, data.password);
+            toast.success("Login successful!");
         } catch {
             setError("Invalid email or password");
+            toast.error("Invalid email or password");
         }
     };
 

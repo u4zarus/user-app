@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 
 type AuthContextType = {
     accessToken: string | null;
@@ -35,25 +35,40 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [refreshToken, setRefreshToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    /**
+     * Sets the access token and refresh token in state and local storage
+     * @param access The new access token
+     * @param refresh The new refresh token
+     */
+    const setTokens = (access: string, refresh: string) => {
+        setAccessToken(access);
+        setRefreshToken(refresh);
+        localStorage.setItem("accessToken", access);
+        localStorage.setItem("refreshToken", refresh);
+    };
+
+    const isTokenExpired = (token: string) => {
+        try {
+            const decoded = JSON.parse(atob(token.split(".")[1]));
+            return decoded.exp * 1000 < Date.now();
+        } catch {
+            return true; // Treat invalid token as expired
+        }
+    };
+
     useEffect(() => {
         const storedAccess = localStorage.getItem("accessToken");
         const storedRefresh = localStorage.getItem("refreshToken");
+
         if (storedAccess && storedRefresh) {
             setAccessToken(storedAccess);
             setRefreshToken(storedRefresh);
 
-            const tokenIsExpired = isTokenExpired(storedAccess);
-            if (tokenIsExpired) {
+            if (isTokenExpired(storedAccess)) {
                 refresh();
             }
         }
     }, []);
-
-    const isTokenExpired = (token: string) => {
-        const decodedToken = JSON.parse(atob(token.split(".")[1]));
-        const expirationTime = decodedToken.exp * 1000;
-        return expirationTime < Date.now();
-    };
 
     /**
      * Logs a user in with the given email and password
@@ -76,13 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 throw new Error("Login failed");
             }
             const data = await res.json();
-
-            setAccessToken(data.accessToken);
-            setRefreshToken(data.refreshToken);
-
-            localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("refreshToken", data.refreshToken);
-
+            setTokens(data.accessToken, data.refreshToken);
             router.push("/");
         } catch (error) {
             console.error(error);
@@ -116,13 +125,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 throw new Error("Signup failed");
             }
             const data = await res.json();
-
-            setAccessToken(data.accessToken);
-            setRefreshToken(data.refreshToken);
-
-            localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("refreshToken", data.refreshToken);
-
+            setTokens(data.accessToken, data.refreshToken);
             router.push("/");
         } catch (error) {
             console.error(error);
@@ -136,7 +139,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
      *
      * If the refresh fails, logs the user out
      */
-    const refresh = async () => {
+    const refresh = useCallback(async () => {
         if (!refreshToken) return;
         try {
             const res = await fetch(`${API_BASE}/auth/refresh-token`, {
@@ -153,7 +156,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             console.error(err);
             logout();
         }
-    };
+    }, [refreshToken]);
 
     /**
      * Logs the user out by removing access and refresh tokens from local storage
