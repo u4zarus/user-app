@@ -33,7 +33,13 @@ const Dashboard = () => {
             <p className="text-center mt-10">You must log in to view posts.</p>
         );
 
-    if (loading) return <Spinner sizeClass="h-8 w-8" color="text-blue-500" />;
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <Spinner sizeClass="h-8 w-8" color="text-blue-500" />
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-2xl mx-auto mt-8 p-4">

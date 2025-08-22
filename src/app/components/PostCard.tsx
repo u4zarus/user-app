@@ -35,11 +35,17 @@ const PostCard: React.FC<PostCardProps> = ({
                 <span className="text-sm text-gray-500">{formattedDate}</span>
             </div>
             <p className="text-gray-700 mb-4">{content}</p>
-            <div
-                className="text-sm text-blue-500 cursor-pointer hover:underline"
-                onClick={() => onAuthorClick?.(authorId)}
-            >
-                By: {authorId}
+            <div className="text-sm text-gray-500">
+                By:{" "}
+                <span
+                    className="text-blue-500 cursor-pointer relative group"
+                    onClick={() => onAuthorClick?.(authorId)}
+                >
+                    {authorId}
+                    <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white py-1 px-2 rounded">
+                        Show posts from this user
+                    </span>
+                </span>
             </div>
         </div>
     );
