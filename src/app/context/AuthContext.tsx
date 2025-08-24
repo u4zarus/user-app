@@ -70,6 +70,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
      * If the refresh fails, logs the user out
      */
     const refresh = useCallback(async () => {
+        /* NOTE: not working properly, falls back to logout instead of a proper refresh
+            I am aware of the issue that it tries to refresh but the response says it's unauthorized
+            and the refresh token is invalid or expired which can't be true.
+
+            I was unable to get the refresh functionality to work, 
+            so the application authomatically logs the user out when the refresh fails
+        */
         const token = localStorage.getItem("refreshToken");
         if (!token) return;
 
