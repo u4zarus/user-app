@@ -46,7 +46,7 @@ const Navbar = () => {
                     {accessToken ? (
                         <button
                             onClick={handleLogout}
-                            className={`${navLinkClass} cursor-pointer`}
+                            className={navLinkClass}
                             aria-label="Logout"
                         >
                             Logout
