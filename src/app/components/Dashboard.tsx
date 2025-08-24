@@ -75,8 +75,8 @@ const Dashboard = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-[60vh]">
-                <Spinner sizeClass="h-8 w-8" color="text-blue-500" />
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <Spinner sizeClass="h-12 w-12" color="text-yellow-400" />
             </div>
         );
     }
@@ -100,6 +100,7 @@ const Dashboard = () => {
                 <p className="text-center mt-10">No posts yet.</p>
             )}
 
+            {/* Posts */}
             <div className="space-y-4">
                 {paginatedPosts.map((post: Post) => (
                     <PostCard

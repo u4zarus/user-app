@@ -44,7 +44,7 @@ export default function RootLayout({
                     <Navbar />
                     {children}
                     <ToastContainer
-                        position="top-right"
+                        position="top-left"
                         autoClose={3000}
                         hideProgressBar={false}
                         newestOnTop={false}

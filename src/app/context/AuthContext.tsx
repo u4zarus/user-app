@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { createContext, useCallback, useEffect, useState } from "react";
 
-type AuthContextType = {
+export type AuthContextType = {
     accessToken: string | null;
     refreshToken: string | null;
     login: (email: string, password: string) => Promise<void>;
@@ -64,6 +64,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
+    /**
+     * Refreshes the access token using the stored refresh token
+     *
+     * If the refresh fails, logs the user out
+     */
+    const refresh = useCallback(async () => {
+        if (!refreshToken) return;
+        try {
+            const res = await fetch(`${API_BASE}/auth/refresh-token`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: refreshToken }),
+            });
+
+            if (!res.ok) throw new Error("Refresh failed");
+            const data = await res.json();
+            setAccessToken(data.accessToken);
+            localStorage.setItem("accessToken", data.accessToken);
+        } catch (err) {
+            console.error(err);
+            logout();
+        }
+    }, [refreshToken]);
+
     useEffect(() => {
         const storedAccess = localStorage.getItem("accessToken");
         const storedRefresh = localStorage.getItem("refreshToken");
@@ -76,7 +100,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 refresh();
             }
         }
-    }, []);
+    }, [refresh]);
 
     /**
      * Logs a user in with the given email and password
@@ -141,30 +165,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setLoading(false);
         }
     };
-
-    /**
-     * Refreshes the access token using the stored refresh token
-     *
-     * If the refresh fails, logs the user out
-     */
-    const refresh = useCallback(async () => {
-        if (!refreshToken) return;
-        try {
-            const res = await fetch(`${API_BASE}/auth/refresh-token`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: refreshToken }),
-            });
-
-            if (!res.ok) throw new Error("Refresh failed");
-            const data = await res.json();
-            setAccessToken(data.accessToken);
-            localStorage.setItem("accessToken", data.accessToken);
-        } catch (err) {
-            console.error(err);
-            logout();
-        }
-    }, [refreshToken]);
 
     /**
      * Logs the user out by removing access and refresh tokens from local storage
