@@ -70,12 +70,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
      * If the refresh fails, logs the user out
      */
     const refresh = useCallback(async () => {
-        if (!refreshToken) return;
+        const token = localStorage.getItem("refreshToken");
+        if (!token) return;
+
         try {
             const res = await fetch(`${API_BASE}/auth/refresh-token`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: refreshToken }),
+                body: JSON.stringify({ refreshToken: token }),
             });
 
             if (!res.ok) throw new Error("Refresh failed");
@@ -83,27 +85,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setAccessToken(data.accessToken);
             localStorage.setItem("accessToken", data.accessToken);
         } catch (err) {
-            console.error(err);
+            console.error("Refresh token error:", err);
             logout();
         }
-    }, [refreshToken]);
+    }, []);
 
     useEffect(() => {
         const storedAccess = localStorage.getItem("accessToken");
         const storedRefresh = localStorage.getItem("refreshToken");
 
-        if (storedAccess && storedRefresh) {
-            setAccessToken(storedAccess);
+        if (storedRefresh) {
             setRefreshToken(storedRefresh);
-
-            if (isTokenExpired(storedAccess)) {
-                if (isTokenExpired(storedRefresh)) {
+            if (storedAccess && !isTokenExpired(storedAccess)) {
+                setAccessToken(storedAccess);
+            } else {
+                refresh().catch(() => {
                     logout();
-                } else {
-                    refresh().catch(() => {
-                        logout();
-                    });
-                }
+                });
             }
         } else {
             logout();
