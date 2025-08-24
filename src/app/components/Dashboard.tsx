@@ -97,7 +97,7 @@ const Dashboard = () => {
             />
 
             {paginatedPosts.length === 0 && (
-                <p className="text-center mt-10">No posts yet.</p>
+                <p className="text-center mt-10">No posts found.</p>
             )}
 
             {/* Posts */}
