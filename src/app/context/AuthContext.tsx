@@ -97,8 +97,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setRefreshToken(storedRefresh);
 
             if (isTokenExpired(storedAccess)) {
-                refresh();
+                if (isTokenExpired(storedRefresh)) {
+                    logout();
+                } else {
+                    refresh().catch(() => {
+                        logout();
+                    });
+                }
             }
+        } else {
+            logout();
         }
     }, [refresh]);
 
@@ -126,7 +134,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setTokens(data.accessToken, data.refreshToken);
             router.push("/");
         } catch (error) {
-            console.error(error);
+            throw error;
         } finally {
             setLoading(false);
         }
@@ -161,6 +169,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             router.push("/");
         } catch (error) {
             console.error(error);
+            throw error;
         } finally {
             setLoading(false);
         }
