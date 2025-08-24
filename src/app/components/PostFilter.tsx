@@ -25,17 +25,17 @@ const PostFilter = ({
     showAllPosts,
 }: PostFilterProps) => {
     return (
-        <div className="mb-4">
+        <div className="mb-6">
             <input
                 type="text"
                 placeholder="Search posts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+                className="w-full p-3 mb-3 bg-gray-800 text-gray-100 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
             />
             <button
                 onClick={showAllPosts}
-                className="py-2 px-4 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="w-full py-3 px-4 bg-yellow-400 text-black font-bold rounded-lg hover:bg-yellow-300 transition-transform transform hover:scale-105"
             >
                 Show All Posts
             </button>

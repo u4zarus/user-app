@@ -28,10 +28,13 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-gray-800 shadow-lg">
-            <div className="container mx-auto px-6 py-3 flex items-center justify-between">
+        <nav className="fixed top-0 left-0 w-full bg-gray-900 shadow-md border-b border-gray-700 z-50">
+            <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                 {/* Logo */}
-                <Link className="text-2xl font-bold text-white" href="/">
+                <Link
+                    className="text-2xl font-extrabold text-yellow-400 tracking-wide hover:text-yellow-300 transition"
+                    href="/"
+                >
                     <span className="font-black">Blog</span>App
                 </Link>
 
@@ -46,7 +49,7 @@ const Navbar = () => {
                     {accessToken ? (
                         <button
                             onClick={handleLogout}
-                            className={navLinkClass}
+                            className="px-3 py-2 bg-gray-800 text-yellow-400 rounded-lg hover:bg-gray-700 hover:shadow-[0_0_8px_#facc15] transition"
                             aria-label="Logout"
                         >
                             Logout
@@ -63,6 +66,7 @@ const Navbar = () => {
                     )}
                 </div>
             </div>
+            <div className="h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500"></div>
         </nav>
     );
 };

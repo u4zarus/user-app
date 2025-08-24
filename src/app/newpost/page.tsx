@@ -68,59 +68,72 @@ const NewPostPage = () => {
 
     if (!accessToken) {
         return (
-            <p className="text-center mt-10">
+            <p className="text-center mt-10 text-gray-300">
                 You must log in to create a post.
             </p>
         );
     }
 
     return (
-        <div className="max-w-md mx-auto mt-8 p-4 bg-gray-800 shadow rounded">
-            <h1 className="text-xl font-bold mb-4">Create New Post</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div>
-                    <label htmlFor="title" className="block mb-1">
-                        Title
-                    </label>
-                    <input
-                        type="text"
-                        id="title"
-                        {...register("title", {
-                            required: "Title is required",
-                        })}
-                        className="w-full border p-2 rounded"
-                    />
-                    {errors.title && (
-                        <p className="text-red-500 text-xs">
-                            {errors.title.message}
-                        </p>
-                    )}
-                </div>
-                <div>
-                    <label htmlFor="content" className="block mb-1">
-                        Content
-                    </label>
-                    <textarea
-                        id="content"
-                        {...register("content", {
-                            required: "Content is required",
-                        })}
-                        className="w-full border p-2 rounded"
-                    />
-                    {errors.content && (
-                        <p className="text-red-500 text-xs">
-                            {errors.content.message}
-                        </p>
-                    )}
-                </div>
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                    {loading ? "Creating..." : "Create Post"}
-                </button>
-            </form>
+        <div className="flex items-center justify-center min-h-screen bg-gray-950 px-4">
+            <div className="w-full max-w-md bg-gray-900 shadow-lg rounded-2xl p-6 border border-gray-700">
+                <h1 className="text-3xl font-extrabold mb-6 text-center text-yellow-400">
+                    Create New Post
+                </h1>{" "}
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                    <div>
+                        <label
+                            htmlFor="title"
+                            className="block text-sm font-semibold mb-1 text-gray-300"
+                        >
+                            Title
+                        </label>
+                        <input
+                            type="text"
+                            id="title"
+                            {...register("title", {
+                                required: "Title is required",
+                            })}
+                            className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-200 placeholder-gray-500"
+                            placeholder="Enter the post title"
+                        />
+                        {errors.title && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.title.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="content"
+                            className="block text-sm font-semibold mb-1 text-gray-300"
+                        >
+                            Content
+                        </label>
+                        <textarea
+                            id="content"
+                            {...register("content", {
+                                required: "Content is required",
+                            })}
+                            className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-200 placeholder-gray-500 resize-none"
+                            rows={6}
+                            placeholder="Write your post..."
+                        />
+                        {errors.content && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.content.message}
+                            </p>
+                        )}
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-300 transition duration-300 disabled:opacity-50"
+                    >
+                        {loading ? "Creating..." : "Create Post"}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

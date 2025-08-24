@@ -29,20 +29,20 @@ const PostCard: React.FC<PostCardProps> = ({
     const formattedDate = new Date(createdAt).toLocaleString();
 
     return (
-        <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-            <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
-                <span className="text-sm text-gray-500">{formattedDate}</span>
+        <div className="bg-gray-900 text-gray-200 rounded-xl shadow-md p-6 mb-6 border border-gray-700 hover:border-yellow-400 transition duration-300 hover:shadow-[0_0_20px_rgba(250,204,21,0.4)]">
+            <div className="flex justify-between items-center mb-3">
+                <h2 className="text-xl font-bold text-yellow-400">{title}</h2>
+                <span className="text-sm text-gray-400">{formattedDate}</span>
             </div>
-            <p className="text-gray-700 mb-4">{content}</p>
+            <p className="text-gray-300 mb-5">{content}</p>
             <div className="text-sm text-gray-500">
                 By:{" "}
                 <span
-                    className="text-blue-500 cursor-pointer relative group"
+                    className="text-yellow-400 font-medium cursor-pointer hover:text-yellow-300 relative group transition"
                     onClick={() => onAuthorClick?.(authorId)}
                 >
                     {authorId}
-                    <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white py-1 px-2 rounded">
+                    <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-gray-200 py-1 px-2 rounded text-xs shadow-lg">
                         Show posts from this user
                     </span>
                 </span>

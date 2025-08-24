@@ -8,7 +8,7 @@ import Dashboard from "./components/Dashboard";
  */
 const Home = () => {
     return (
-        <main>
+        <main className="pt-20">
             <Dashboard />
         </main>
     );

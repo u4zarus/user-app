@@ -82,8 +82,10 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="max-w-2xl mx-auto mt-8 p-4">
-            <h1 className="text-2xl font-bold mb-4">All posts</h1>
+        <div className="max-w-2xl mx-auto mt-8 p-4 bg-gray-900 text-gray-100 rounded-xl shadow-lg">
+            <h1 className="text-3xl font-extrabold mb-6 text-yellow-400 tracking-wide">
+                All Posts
+            </h1>
 
             <PostFilter
                 searchQuery={searchQuery}

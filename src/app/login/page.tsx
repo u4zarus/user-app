@@ -55,16 +55,18 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-background px-4">
-            <div className="w-full max-w-md bg-gray-900 shadow-lg rounded-2xl p-6">
-                <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <div className="flex items-center justify-center min-h-screen bg-gray-950 px-4">
+            <div className="w-full max-w-md bg-gray-900 shadow-lg rounded-2xl p-6 border border-gray-700">
+                <h1 className="text-3xl font-extrabold mb-6 text-center text-yellow-400">
+                    Login
+                </h1>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                     {/* Email */}
                     <div>
                         <label
                             htmlFor="email"
-                            className="block text-sm font-medium mb-1"
+                            className="block text-sm font-semibold mb-1 text-gray-300"
                         >
                             Email
                         </label>
@@ -74,7 +76,7 @@ const LoginPage = () => {
                             {...register("email", {
                                 required: "Email is required",
                             })}
-                            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                            className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-200 placeholder-gray-500"
                             placeholder="Enter your email"
                         />
                         {errors.email && (
@@ -88,7 +90,7 @@ const LoginPage = () => {
                     <div>
                         <label
                             htmlFor="password"
-                            className="block text-sm font-medium mb-1"
+                            className="block text-sm font-semibold mb-1 text-gray-300"
                         >
                             Password
                         </label>
@@ -98,7 +100,7 @@ const LoginPage = () => {
                             {...register("password", {
                                 required: "Password is required",
                             })}
-                            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                            className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-200 placeholder-gray-500"
                             placeholder="Enter your password"
                         />
                         {errors.password && (
@@ -112,7 +114,7 @@ const LoginPage = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                        className="w-full bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-300 transition duration-300 disabled:opacity-50"
                     >
                         {loading ? "Logging in..." : "Login"}
                     </button>
